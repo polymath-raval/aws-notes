@@ -110,7 +110,29 @@
 	- Application Integration
 		- Step Function
 		- Amazon MQ
-		- SNS - Simple Notification Service
-		- SQS - Simple Queue Service
-		- SWF - Simple Workflow Service
-		
+		- SNS => Simple Notification Service
+		- SQS => Simple Queue Service
+		- SWF => Simple Workflow Service
+
+	- Customer Engagement
+		- Connect
+		- Simple Email Service
+
+	- Business Productivity
+		- Alexa for Business
+		- Chime => Video conferencing
+		- Work Docs => Dropbox like
+		- Work Mail => Something like Outlook, 
+
+	- Desktop & App Streaming:
+		- Workspaces => VDI on cloud
+		- AppStream 2.0 => App on cloud and stream on desktop
+
+	- Internet Of things:
+		- iOT
+		- iOT Device Management
+		- Free RTOS 
+		- Green Grass
+
+	- Game Development:
+		- GameLift
