@@ -1,0 +1,103 @@
+Invention requires two things:
+	a. the ability to try a lot of experiments
+	b. not having to live with the collateral damage of failed experiments
+
+1300+ Services/Service Updates Right now 2018
+
+16 Regions & 44 Availability Zones && 96 Edge Location
+
+Avaiblity zone => data centers
+Region => geographical area.
+Region => Sum(more than 2 Availibity Zone) (Condition = 2 Availibity Zone in a region should cater to Disaster Recovery)
+Edge Location => Endpoints for AWS which are used for caching content. Typically AWS CDN use the same
+
+
+
+
+- Services
+	- Compute (EC2 => Elastic Cloud Compute)
+		- EC2 => Virtual Machine
+		- EC2 Container Service => Containers like Docker
+		- Elastic BeanStalk => Something like PAAS (Cloud Foundry)
+		- Lambda => Serverless Compute
+		- Light Sail => Provisions a server and fix IP Address and gives Management Console
+		- Batch => Batch Computing *********
+
+
+	- Storage
+		- S3 (Simple Storage Service) => Object based Storaged, grouped by Buckets
+		- EFS (Elastic File System) => NAS, mount to multiple VM
+		- Glacier => Data Archival
+		- Snowball => Mechanism to transfer Petabytes of data to AWS
+		- Storage Gateway => VMs to be installed on Client Corporate's datacenters that needs to be accessed via AWS
+
+	- Database
+		- RDS => Relational Database Service => MySQL, Aurora, MS SQL, Postgres, Oracle
+		- Dynamo DB => Non Relational Database
+		- Elastic Cache => Caching services
+		- Red Shift => Dataware House, Business Intelligence
+
+	- Migrations **********
+		- AWS Migration Hub
+		- Application Discovery Service
+		- Database Migration Service
+		- Server Migration Service
+		- Snowball
+
+	- Networking & Content Delievery
+		- VPC => Virtual Private Cloud. Virtual DataCenter
+		- Cloud Front => Content Delievery Network
+		- Route 53 => DNS Service
+		- API Gateway => API for services to talk to each other
+		- Direct Connect => Dedicated Line between Client Corporate's to Amazon
+
+	- Developers tools
+		- Code Star => Developer Collabration
+		- Code Commit => Source Control System
+		- Code Build => Continious Delievery
+		- Code Deploy => Continious Deploy
+		- Code Pipeline => Chain the CI/CD
+		- X-Ray => Profiler Sort of service for Serverless
+		- Cloud9 => IDE for development on Cloud
+
+	- Management Tools
+		- Cloud Watch => Monitoring Service
+		- Cloud Formation => Scripted Infrastructure
+		- Cloud Trail => Audit History any thing done on AWS Management Console
+		- Config => Point and Time Snapshot of the your entire AWS Environment
+		- OPS Work => Using Chef and Puppet for auto configuration 
+		- Service Catalog => *******
+		- System Manager => Manage EC2 Instances, eg. Rolling a security patch
+		- Trusted Advisor => Gives advice across Security, Money, etc.,
+		- Managed Service => 
+
+	- Media Services
+		- Elastic Transcoder => Generates Video/Audio for various devices for uploaded video/audio
+		- MediaConvert
+		- MediaLive
+		- MediaPackage
+		- MediaStore
+		- MediaTailor
+
+	- Machine Learning
+		- Sage Maker => Deep Learning (Neural Network)
+		- Comprehend => Sentiment Analysis
+		- Deeps Lens => Physical Hardware that helps with object recognisation on the client/camera itself
+		- Lex => Auto Chatbox for clients
+		- Machine Learning => Normal Machine Learning
+		- Polly => Takes Text and turns to speech
+		- Rekognition => object rekognition once media is uploaded to cloud
+		- Translate => from one languege to another 
+		- Transcribe => Upload video/audio to turns it text
+
+	- Analytics
+		- Athena => SQL Query against Files in S3 Bucket, Serverless 
+		- EMR => Elastic Map Reduce
+		- Cloud Search 
+		- Elastic Search
+		- Kinesis => Ingesting large amount of data in AWS
+		- Kinesis Video Streams => Ingesting large amount of video in AWS
+		- QuickSight => Amazon BI tool
+		- Data Pipeline => 
+		- Glue => ETL in AWS
+		

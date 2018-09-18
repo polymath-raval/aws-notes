@@ -1,0 +1,5 @@
+- Topology
+	- Avaiblity zone => data centers
+	- Region => geographical area.
+	- Region => Sum(more than 2 Availibity Zone) && (Condition = 2 Availibity Zone in a region should cater to Disaster Recovery)
+	- Edge Location => Endpoints for AWS which are used for caching content. Typically AWS CDN use the same
