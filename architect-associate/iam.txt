@@ -1,0 +1,20 @@
+- IAM
+	- Features
+		- Identity Access Management
+		- Centralized control of all the AWS resources linked to the account
+		- Granular Permissions
+		- Indentity Fedrations (including Active Directory, Facebook, Linkedin etc.,)
+		- Multifactor Authentication
+		- Temp access for user/devices and services if necessary
+		- Password Rotation Policy
+		- PCI DSS Complient - Payment Card Industry Data Security Standard
+
+	- Terms:
+		- User => People
+		- Group => Collection(People) & IsRelated(People)
+		- Roles => Something assigned to AWS Resources
+		- Policies => Something that binds User, Group & Roles
+		
+	- Under global region
+
+	
