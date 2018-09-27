@@ -1,0 +1,99 @@
+- EC2
+	- Elastic Cloud Compute
+	- Resizable Compute Capacity in Cloud
+	- Horizontal and Vertical upscale and downscale on demand
+
+	- Options:
+		- On Demand
+			- pay per timeunit (second/minute/hour) of usage
+			- no commitment
+			- no upfront payments
+			- usecases short term, spiky, unpreditable workloads
+
+		- Reserved
+			- contractual usage obligation
+			- 1 Year or 3 Year contracts
+			- offers a significant discount on On Demand Instance
+			- scenario: steady state or predictable usage
+			- options:
+				- Standard (upto 75% off-demand)
+				- Convertable (upto 75% off-demand)
+				- Scheduled 
+
+		- Spot
+			- bid for instance(s) at desired prices
+			- pay per hour
+			- instance allocated till & when the desired price is applicable
+			- applications should have flexible start and end times
+			- Partial usage charges are not billed incase terminated by Amazon
+			- Partial usage charges are billed incase terminated by user
+			- scenario: RnD use cases requiring large amount compute capacity
+
+		- Dedicated
+			- Physical EC2 servers for dedicated use
+			- scenario: useful in scenarios of leveraging server-bound software licenses
+			- scenario: regularory requirement that may not support multitenant virtualization
+			- options:
+				- On Demand (timeunit: hourly)
+				- Reservations (70% on demand price)
+
+	- Types: ...
+
+	- EBS
+		- Elastic Block Storage
+		- A virtual hard disk attached to the EC2 instance
+		- also called volumes
+		- a root volume is where an os is installed
+		- Replicated to prevent failure of a single component
+		- Disk where softwares can be installed
+		- Options:
+			- General Purpose SSD (GP2)
+				- scenario: Standard Servers
+			- Provisioned IOPS SSD (I01)
+				- scenario: Mission Critical Apps e.g. SQL or no SQL DB
+			- Throughput Optimized HDD (ST1) (cannot be a boot volume)
+				- scenario: frequently accessed, throughput-intensive workload e.g. Bigdata
+			- Cold HDD (cannot be a boot volume)
+				- scenario: low cost less frequenty used workloads e.g. FileServer
+			- Magentic (Standard)
+				- scenario: dev/uat/ cheap boot volume
+		- We can upgrade space and option of a volume even after its attached to an instance, no downtime incurred
+		- The EC2 Instance and the volume has to be in the same Availability Zone
+		- Inorder to create a EC2 Instance in  Availability Zone A with the desired volume in Availability Zone B, take a snapshot of the volume and recreate a volume in Availability Zone A with the snapshot
+		- While taking snapshots of a volume, it is a incremental method. Only changes are saved in a sequence of snapshot of the volumes
+
+		- Snahoshots/AMI notes:
+			- Stop the instance before taking a snapshot of the root volume (best practise)
+			- Snapshot of an un-encrypted volume would be un-encrypted
+			- Snapshot of an encrypted volume would be encrypted
+			- To convert an un-encrypted snapshot to encrypted, copy the snapshot and command it to be encrypted
+			- AMI avaible on market place always have to be un-encrypted.
+			- Volumes created from encrypted snapshots are encrypted
+			- Volumes created from un-encrypted snapshots are un-encrypted
+			- Keys of encryption are stored within account. That makes it impossible to share encrypted snapshots/ami to another account
+
+
+
+	- Amazon Machine Imange
+		- Boot Volume => Snapshot => Amazon Machine Imange
+		- EC2 Instance => Amazon Machine Imange
+
+
+
+	- Security Group
+		- First level of defense against unathorized connection to EC2 Instance
+		- Defines how can one connect from Public Internet with the Instance, which protocol/originating ip addres/incoming port
+		- One EC2 instance can be behind many security groups
+		- Rules are stateful. Meaning if you add a inbound rule, it will put required outbound rule
+		- Any changes made to security are immediate
+		- By default every traffic is blocked by Security Group, so rules are only for whitelisting not black listing
+		- Given the fact that only whitelisting is allowed in security groups, when a EC2 Instance is behind more than one security group, the effective is additive in nature. No conflicts are possible as ther eis no black listing
+	
+
+	
+	- Lab1:
+		- Termination is turned off by default
+		- On EBS-backed instances, when the instance is deleted the Volume is also deleted by default
+		- On EBS Root volumes of default AMI's cannot be encrypted
+			- for doing the same, take the snapshot of the EBS volume of the created volume and encrypted the copy
+

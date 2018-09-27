@@ -8,9 +8,12 @@
 	- cannot be used to install os, softwares etc., (Block based storage should be used for that)
 	- Max Size 5 TB for a single file
 	- S3 has a universal namespce although the bucket is region specific
+	- 100 Bucket per account by default
+	
 	- Consistency:
 		- New Object (PUTS) => Immediate Read after Write
 		- Existing Object (PUTS, DELETE) => Eventual Read after Write
+
 	- S3 Object consists of:
 		- Key
 		- Value
@@ -18,6 +21,7 @@
 		- Metadata
 		- Access Control Lists (ACL)
 		- Torrent
+
 	- S3 Storage Tiers
 											|	S3 Standard		|	S3 Infrequently Accessed	|	S3 Infrequently Accessed(One Zone)	|	Glacier			|
 											|	-----------		|	------------------------	|	----------------------------------	|	-------			|
@@ -25,10 +29,13 @@
 		- Availability (Designed)			|	99.99%			|	99.90%						|	99.50%								|	N/A 			|
 		- Availability (SLA)				|	99.9%			|	99%							|	99%									|	N/A 			|
 		- Availability Zone					|	>= 3			|	>= 3						|	1									|	>= 3			|
-		- Minimum Capacity Charge			|	N/A 			|	128 KB						|	128 KB								|	N/A 			|
-		- Minimum Storage Duration Charge	|	N/A 			|	30 Days						|	30 Days								|	90 Days			|
+		- Minimum Capacity Charges 			|	N/A 			|	128 KB						|	128 KB								|	N/A 			|
+		- Minimum Storage Duration Charges 	|	N/A 			|	30 Days						|	30 Days								|	90 Days			|
 		- Retrival Fee						|	N/A 			|	per GB Retrieved			|	per GB Retrieved					|	per GB Retrieved|
 		- First Byte Latency				|	miliseconds		|	miliseconds					|	miliseconds							|	hours/minutes	|
+		- Cost 								|	4		 		|	2							|	1									|	0				|
+
+		** Reduced Redendency would cost wise be number 3
 
 	- Charges Applied
 		- Storage 
@@ -47,3 +54,111 @@
 				- Users in South America will transfer the object to a  edge location near to them
 				- Once the object is tranfered to the edge location then the object would be tranfered to bucket using dedicated amazon lines
 			- Charged if such a facility is enabled
+
+	- Versioning:
+		- Decision to maintain or not is at a bucket level
+		- Once Activiated, can only be suspended and not deleted
+		- Can prove to be costly if the bucket contains huge frequently changing files
+		- Multi-Factor Authentication may be added to prevent accidental detlets
+		- Even if the object is deleted, just a delete marker is added in case its versioned. Additional step of deleting all the versions has to be taken
+
+	- Replications:
+		- Versioning needs to be enabled on source and target
+		- Only the files created/updates after the replication rule is enabled are replicated
+		- Many of the features are yet to be tested by me
+
+	- Lifecycle Management:
+		- can be used with or without versioing
+		- can be applied to current or previous version
+		- can have two events:
+			- move to Infrequenty Used Objects or Glaciers after x days
+			- cleanup the object after x days
+			- do the above both i.e. move the object and clean it up then
+
+	- CloudFront 
+		- Its a Amazon backed Content Delievery Network
+		- Key Components
+			- Distribution:
+				- Content in question, can be WebDistribution or RTMP - Media Streaming
+			- Origin:
+				- S3 Bucket
+				- EC2 Instance
+				- Elastic Load Balancer
+				- Route 53
+				- Non AWS origins which can store the original, definitive versions of your file
+			- Edge Location(s)
+		- Its works by cacheing the distribution content to be served by the origin into the edge location with a validity of Time To Live for that particular content
+		- As the number of edge locations around the world are much more than the Regions/Availability Zones, it helps the user experience by making interactions more resposnive
+		- User with the first request pays they price for the entire thing to work seamlessly for the next users
+		- ** This expidiates the read/write experience not just read. Writes to the edge location are synced back to the origin **
+		- Objects are cached for the life of TTL. If needed to be refreshed before TTL it would be charged
+		- Presigned URLs & Presigned Cache can be used to ensure that only parties paying money for the content are allowed to see the content
+
+	- Securing your bucket
+		- By default all the buckets are private
+		- Access Control to bucket can be established with
+			- Bucket Policies
+			- Access Control Lists
+		- All the activities on the bucket can be logged to
+			- another bucket with in same aws account
+			- another bucket in another aws account 
+		- Data can be encrypted via
+			- In Transit
+				- SSL/TLS
+			- At Rest
+				- Server Side Encryption
+					- S3 Managed Keys - SSE - S3
+					- AWS Key Managment Service, Managed Keys - SSE - KMS
+					- Customer Provided Keys - SSE - C
+				- Client Side Encryption
+
+	- Amazon Storage Gateway
+		- Creates an interface that would allow on-premise applications to be use AWS S3 but as if that data was on the premise too
+		- For using the same, one has to put a VM image on box that can be configured at installation time with the AWS Account
+		- Four Types of Storage Gateways:
+			- File Gateway (NFS) => Object Based Storage
+			- Volume Gateway (iSCSI) => Block Based Storage
+				- Stored Volumes
+					- Entire data is stored on premise, and asynchronously backed up to AWS
+				- Cached Volumes
+					- Entire data is stored on AWS, and most recently stored data is stored on premise for a performace boost
+			- Tape Gateway (VTL)
+				- Enterprises generally take archive the data on tapes via backup application like NetBackup, Backup Exec, Veeam etc.,
+				- Backup Applications creates virtual tapes which are then passed on to S3
+				- Lifecycle management helps it put on Glaciers for cost effective ness
+
+	- S3 Trasfer Acceleration
+		- Leverages CloudFront to accelerate upload to S3 Buckets
+		- Uploads would happen with following flow
+			- users use a s3-accelerate url for uploading the file
+			- internally user's upload happens to the edge location near to her
+			- then the file is transferred to the availibility zone via dedicate amanon lines via perfomance tuned protocols
+
+	- Snowball
+		- earlier service Import Export
+			- People sent their HDD to Amazon to be loaded in S3
+		- Usecase
+			- Imagine some one has PetaBytes/TeraBytes of data
+			- The internet conneciton is limited
+			- They want to upload the data to Amazon S3 Buckets
+			- They order a snowball, a device which would be shipped to their location
+			- Data is transferred by the users on their location in snowball
+			- Snowball is shipped back to Amazon
+			- Amazon loads the data to S3 Buckets
+			- Snowballs are 
+				- Tempre Resistant enclosures
+				256 bit encryption
+				- Trused Platform Module
+				- Softweare level Erase done after the usage 
+		- Types 
+			- Snowball
+				- Only Storage ~ 50 Tera Byte
+			- Snowball Edge
+				- Storage and Compute ~ 80 Tera Byte
+				- e.g. on airplanes where it requires compute and data too
+				- acts likes AWS Data Centre on a box
+			- Snowmobile
+				- Exabyte-scale data transfer
+				- e.g. DataCentre Migration is a usecase
+
+
