@@ -74,11 +74,30 @@
 
 
 
-	- Amazon Machine Imange
+	- Amazon Machine Imange (AMI)
 		- Boot Volume => Snapshot => Amazon Machine Imange
 		- EC2 Instance => Amazon Machine Imange
-
-
+		- AMI which has to be stored with another account cannot be encrypted
+		- AMI can be selected with:
+			- Region
+			- Operating System
+			- Architectures (32 bits vs 64 bits)
+			- Launch Permissions
+			- Root Decive Type (EBS/Instance Store)
+				- Instace Store (Ephemeral Storage)
+					- cannot be stopped, it can only rebooted or terminated
+					- Depriciated
+					- Less Durable
+					- volume is created by a template stored in Amazon S3
+					- Deleted always with termination of the instance
+					- ** HAS A AMAZING SPEED AS THE HDD IS ON THE PHYSICAL INSTANCE **
+				- EBS Backed Volumes
+					- can be started/stopped/rebooted/terminated
+					- More Durable
+					- Can be detached from live instance and attached to another instance
+					- volume is created by EBS Snapshot
+					- Option of being not deleted on termination of the instance
+					- ** NOT AS FAST AS INSTANCE STORE AS THE HDD IS BACKED BY EBS VOLUME SITTING ON NETWORK, THATS THE REASON OF LIMITED IOPS **
 
 	- Security Group
 		- First level of defense against unathorized connection to EC2 Instance
@@ -89,6 +108,26 @@
 		- By default every traffic is blocked by Security Group, so rules are only for whitelisting not black listing
 		- Given the fact that only whitelisting is allowed in security groups, when a EC2 Instance is behind more than one security group, the effective is additive in nature. No conflicts are possible as ther eis no black listing
 	
+	- Load Balancers
+		- Balances the load acc
+		- X-Forwarded-For Header contains the IPv4 of the actual user
+		- Types
+			- Application Load Balancer
+				- Operates @ Level 7
+				- best suited for http/https traffic
+				- very intelligent load balancers
+				- request routing can be done looking into the actual request
+			- Network Load Balancer
+				- Operates @ Level 4
+				- best suited for tcp traffic where extreme performance is required
+			- Classic Load Balancer
+				- Legecy Elastic Load Balancers
+				- Operates a bit at layer 7 & layer 4
+				- Layer 7 can only rely on sticky session or X-Forwarded-For
+		- Errors (** ERROR CODE 504 **)
+			- this is the error when the request at Load Balancer times out
+			- underlying applicaiton has not responed within the time frame required
+
 
 	
 	- Lab1:
