@@ -111,6 +111,14 @@
 	- Load Balancers
 		- Balances the load acc
 		- X-Forwarded-For Header contains the IPv4 of the actual user
+		- Parameters requied to configure:
+			- Routing details (Incoming Protocal:Port => Outgoing Protocol:Port)
+			- Ping Protocol:Port:Path
+			- Ping Respoonse Timeout
+			- Ping Interval
+			- Unhealthy threshold (Number of ping to fail consecutively for Instance to be marked unhealthy)
+			- Healthy threshold (Number of ping to successed after it marked unhealth to be marked healthy)
+
 		- Types
 			- Application Load Balancer
 				- Operates @ Level 7
@@ -127,8 +135,6 @@
 		- Errors (** ERROR CODE 504 **)
 			- this is the error when the request at Load Balancer times out
 			- underlying applicaiton has not responed within the time frame required
-
-
 	
 	- Lab1:
 		- Termination is turned off by default
