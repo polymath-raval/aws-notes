@@ -111,8 +111,12 @@
 	- Load Balancers
 		- Balances the load acc
 		- X-Forwarded-For Header contains the IPv4 of the actual user
+		- Never provided with public IP Address of Load Balancer
+		- Has its own DNS Name
 		- Parameters requied to configure:
 			- Routing details (Incoming Protocal:Port => Outgoing Protocol:Port)
+			- Security Group
+			- Attached EC2 Instances
 			- Ping Protocol:Port:Path
 			- Ping Respoonse Timeout
 			- Ping Interval
@@ -136,6 +140,56 @@
 			- this is the error when the request at Load Balancer times out
 			- underlying applicaiton has not responed within the time frame required
 	
+	
+	- Cloud Watch
+		- EC2 instances health can be monitored via Cloud Watch
+		- By default matrices are gathered is every 5 minutes
+		- Matrices can also gathered every 1 minute but it will be a paid service
+		- Dashboards/Alarms can be set using the matrices
+		- Incase the provided matrices are not enough we can write code that will expose the requried matrices
+
+	- Command Line Interface
+		- we need a user with programmatic access incase we want to use AWS CLI
+		- the access_id and secret_access_key are leveraged to set aws cli using `aws configure`
+		- but the above way is really not secured
+		- so the better way is to create IAM roles for EC2 instances and attach the same to an EC2 instance
+		- then to log into that ec2 instance and it is already configured to perform tasks that are allowed to that role
+
+	- BootStrap Scripts
+		- BootStrap scripts can be attached to EC2 instance
+		- It will get executed on the launch of the instances
+		- Very useful for various things like installing softwares, putting artifacts
+
+	- EC2 Instance Metadata
+		- to retrive metadata once on the meta-data instance
+		- can be used for a lot of purpose
+		- e.g., when an ec2 instance comes up, it can be used to get the private ip address, then create a S3 Bucket, a lamda function return on top of that to add the ip address to the DNS entry
+
+		[ec2-user@ip-172-31-29-120 ~]$ curl http://169.254.169.254/latest/meta-data/
+		ami-id
+		ami-launch-index
+		ami-manifest-path
+		block-device-mapping/
+		events/
+		hostname
+		iam/
+		instance-action
+		instance-id
+		instance-type
+		local-hostname
+		local-ipv4
+		mac
+		metrics/
+		network/
+		placement/
+		profile
+		public-hostname
+		public-ipv4
+		public-keys/
+		reservation-id
+		security-groups
+
+
 	- Lab1:
 		- Termination is turned off by default
 		- On EBS-backed instances, when the instance is deleted the Volume is also deleted by default
